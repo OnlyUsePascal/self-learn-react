@@ -64,7 +64,7 @@ const CounterBtn = () => {
   );
 };
 
-const Part02 = (props) => {
+const Part02 = () => {
   console.log(`Part 02`);
 
   return (
