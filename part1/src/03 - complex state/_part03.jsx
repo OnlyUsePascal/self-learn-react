@@ -1,6 +1,8 @@
+import Exercise from "./_exercise";
 import ComplexState from "./complexState";
 import ConditionalRender from "./conditionalRender";
 import QueuedUpdate from "./queuedUpdate";
+import ReturnedHandler from "./returnedHandler";
 
 
 const Part03 = () => {
@@ -10,6 +12,8 @@ const Part03 = () => {
       <ComplexState />
       <QueuedUpdate />
       <ConditionalRender />
+      <ReturnedHandler />
+      <Exercise />
     </>
   );
 };
