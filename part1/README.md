@@ -1,4 +1,5 @@
 # part 01 - intro to react
+
 ## a - intro to react
 
 fast booting a project
@@ -34,21 +35,24 @@ const hello = (props) => {
 
   return (
     <div>
-      <p>hello {props.name}, you are {props.age} years old!</p>
+      <p>
+        hello {props.name}, you are {props.age} years old!
+      </p>
     </div>
-  )
-}
+  );
+};
 
 const app = () => {
   return (
     <div>
-      <hello name = 'joun' age = '12'/>   
+      <hello name="joun" age="12" />
     </div>
   );
 };
 ```
 
 possible error - react do not allow objects rendering
+
 ```js
 const app = () => {
   const value1 = ["a", "b", "c"];
@@ -76,7 +80,7 @@ const counterbtn = () => {
   // the whole component / method is re-rendered when clicked
   // the log below repeated is a proof
   console.log(`count with btn ... ${count}`);
- 
+
   // setTimeout(() => {
   //   setCount(count + 1);
   // }, 1000);
@@ -96,6 +100,7 @@ const counterbtn = () => {
 - We can either trigger the callback using `setTimeout`, or attach to a button `onClick`
 
 - When triggered, the component is re-rendered, or the function returning it is re-called. Check how the `console.log` is called when triggered.
+
   - `setTimeout` is more special such that, since the method is re-called, `setTimeout` is also set, making the timer run non-stop
 
 - If we use `onClick={setCount()}`, this immediately cause the component to re-render -> `setCount()` get called again -> infinite loop
@@ -133,11 +138,123 @@ const CounterBtn = () => {
 
 > In React, it’s conventional to use `onSomething` names for props which take functions which handle events and `handleSomething` for the actual function definitions which handle those events
 
+## d - Lots of stuff
 
+### Dealing with large object
 
+There can be many ways
 
+```js
+const [stat, setStat] = useState({ left: 0, right: 0 });
 
+// method 1
+const onClick1 = (attr) => {
+  const newStat = {
+    left: stat.left,
+    right: stat.right,
+  };
+  if (attr === "left") newStat.left += 1;
+  else newStat.right += 1;
 
-## Unresolved notes
+  setStat(newStat);
+};
+
+// method 2 - spread feature
+const onClick2 = (attr) => {
+  // not safe if attr is not existant
+  const newStat = {
+    ...stat,
+    [attr]: stat[attr] + 1,
+  };
+
+  setStat(newStat);
+};
+```
+
+But _NEVER DIRECTLY MODIFY THE STATE ITSELF_
+
+```js
+const onClick3 = (attr) => {
+  stat[attr] += 1;
+  setStat({});
+};
+```
+
+### Async SetState
+
+There are two ways of modifying a state: replace with a new value, or using a callback.
+
+However, using them in different order can cause different results
+
+```js
+const [num, setNum] = useState(0);
+
+const onClick1 = () => {
+  setNum(num + 1);
+  setNum(num + 1);
+};
+
+const onClick2 = () => {
+  setNum((n) => n + 1);
+  setNum((n) => n + 1);
+};
+
+const onClick3 = () => {
+  setNum(num + 1);
+  setNum((n) => n + 1);
+};
+
+const onClick4 = () => {
+  setNum((n) => n + 1);
+  setNum(num + 1);
+};
+```
+
+### Setting key for iterative elements
+
+It is common that we get a warning when trying to iterate over a list to render components
+
+```js
+<ul>
+  {todos.map((todo, index) => {
+    return (
+      <li>
+        {todo.title} {todo.done ? "✅" : ""}
+      </li>
+    );
+  })}
+</ul>
+
+// warning: Each child in an array should have a unique "key" prop.
+```
+
+One easy way is to add `key` attribute for `li` elements. However, it is not a good practice to do so.
+
+A better one is to create the row's index beforehand (not its position in the array)
+
+```js
+<tbody>
+  {rows.map((row) => {
+    return <ObjectRow key={row.uniqueId} />;
+  })}
+</tbody>;
+
+// or id provider
+function componentWillMount() {
+  let rows = this.props.rows.map((item) => {
+    return { uid: SomeLibrary.generateUniqueID(), value: item };
+  });
+}
+```
+
+# Unresolved notes
+
 - React props required
 - `export default` vs `export const`
+
+# Beautiful sources
+- [Key prop for array children](https://stackoverflow.com/questions/28329382/understanding-unique-keys-for-array-children-in-react-js) 
+
+- [Modify a component state](https://stackoverflow.com/questions/37755997/why-cant-i-directly-modify-a-components-state-really/40309023#40309023)
+
+- [State update async](https://react.dev/learn/queueing-a-series-of-state-updates)
