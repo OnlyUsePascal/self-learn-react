@@ -1,4 +1,5 @@
 import Exercise from "./_exercise";
+import Exercise2 from "./_exercise2";
 import ComplexState from "./complexState";
 import ConditionalRender from "./conditionalRender";
 import QueuedUpdate from "./queuedUpdate";
@@ -14,6 +15,7 @@ const Part03 = () => {
       <ConditionalRender />
       <ReturnedHandler />
       <Exercise />
+      <Exercise2 />
     </>
   );
 };
