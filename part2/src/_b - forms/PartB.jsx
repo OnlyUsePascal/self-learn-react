@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Homework from "./Homework";
 
 const Note = ({ key, note }) => {
   return (
@@ -91,6 +92,8 @@ const PartB = () => {
 
       <h2>Filter button</h2>
       <FilterBtn isFiltered={isFiltered} onClickFilter={onClickFilter} />
+      
+      <Homework />
     </>
   );
 };
