@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import PartD from "../_d - /PartD";
 
 const TestAxios = ({ onClickRequest }) => {
   return (
@@ -24,7 +25,7 @@ const FetchStatus = ({ good, bad, notes }) => {
   );
 };
 
-const UseEffect = ({ onClickRequest }) => {
+const UseEffect = ({ onClickRequest}) => {
   const [input, setInput] = useState("");
 
   const onInputChange = (e) => {
@@ -79,7 +80,9 @@ export default function PartC() {
       <h1>C - Data Server & Request</h1>
       <TestAxios onClickRequest={onClickRequest} />
       <FetchStatus good={good} bad={bad} notes={notes} />
-      <UseEffect onClickRequest={onClickRequest} />
+      <UseEffect onClickRequest={onClickRequest} notes={notes}/>
+      
+      <PartD onClickRequest={onClickRequest}/>
     </>
   );
 }
