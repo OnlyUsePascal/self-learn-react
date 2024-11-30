@@ -18,7 +18,7 @@ const FetchStatus = ({ good, bad, notes }) => {
       <h2>Fetch Status</h2>
       <p>Success request: {good}</p>
       {notes.map((note) => (
-        <li key={note.id}>{note.content}</li>
+        <li key={note.id}>{note.content + ((note.important) ? '❗' : '')}</li>
       ))}
       <p>Failed request: {bad}</p>
     </>
@@ -82,7 +82,7 @@ export default function PartC() {
       <FetchStatus good={good} bad={bad} notes={notes} />
       <UseEffect onClickRequest={onClickRequest} notes={notes}/>
       
-      <PartD onClickRequest={onClickRequest}/>
+      <PartD onClickRequest={onClickRequest} notesLen={notes.length}/>
     </>
   );
 }
