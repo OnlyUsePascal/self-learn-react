@@ -81,12 +81,46 @@ const ToggleNote = ({ onClickRequest, notesLen }) => {
   );
 };
 
+const DeleteNote = ({ onClickRequest }) => {
+  const [id, setId] = useState("");
+  const [status, setStatus] = useState("Idle");
+
+  const onChangeId = (e) => setId(e.target.value);
+
+  const onClickDelete = async () => {
+    setStatus("Pending...");
+
+    await new Promise((res, rej) => setTimeout(res, 1000));
+
+    axiosService
+      .delete(`/notes/${id}`)
+      .then((res) => {
+        setStatus("Done!");
+        onClickRequest();
+      })
+      .catch((rej) => {
+        setStatus("Failed :(");
+        alert(rej.message);
+      });
+  };
+
+  return (
+    <li>
+      Note id here:
+      <input type="text" value={id} onChange={onChangeId} />
+      <button onClick={onClickDelete}>Delete</button>
+      || Status: {status}
+    </li>
+  );
+};
+
 export default function PartD({ onClickRequest, notesLen }) {
   return (
     <>
       <h1>D - More than GET</h1>
       <NewNote onClickRequest={onClickRequest} />
       <ToggleNote onClickRequest={onClickRequest} notesLen={notesLen} />
+      <DeleteNote onClickRequest={onClickRequest}/>
     </>
   );
 }
