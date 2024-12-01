@@ -1,17 +1,40 @@
 import axios from "axios";
 import { useState } from "react";
+import axiosService from "./axiosService";
 
-const BASE_URL = "http://localhost:3001/notes";
+// const BASE_URL = "http://localhost:3001/notes";
 
-const NewNote = ({ newNoteContent, onChangeNewNote, onClickNewNote }) => {
+const NewNote = ({ onClickRequest }) => {
+  const [newNoteContent, setNewNote] = useState("");
+
+  const onChangeNewNote = (e) => {
+    setNewNote(e.target.value);
+  };
+
+  const onClickNewNote = (e) => {
+    e.preventDefault();
+    if (newNoteContent.length == 0) return;
+
+    const newNote = {
+      content: newNoteContent,
+      important: Math.random() < 0.5,
+    };
+    // console.log(newNote);
+
+    axiosService.post("/notes", newNote).then((res) => {
+      onClickRequest();
+      setNewNote("");
+    });
+  };
+
   return (
-    <form>
+    <li>
       New note here:
       <input type="text" value={newNoteContent} onChange={onChangeNewNote} />
       <button onClick={onClickNewNote} type="submit">
         Submit
       </button>
-    </form>
+    </li>
   );
 };
 
@@ -29,13 +52,15 @@ const ToggleNote = ({ onClickRequest, notesLen }) => {
 
   const onClickToggle = (e) => {
     e.preventDefault();
-    const putUrl = BASE_URL + `/${noteId}`;
-    axios.get(putUrl).then((res) => {
+    // const putUrl = BASE_URL + `/${noteId}`;
+    const endpoint = `/notes/${noteId}`;
+
+    axiosService.getOne(endpoint).then((res) => {
       // assume things is right
       const note = res.data;
       const newNote = { ...note, important: !note.important };
 
-      axios.put(putUrl, newNote).then((res) => {
+      axiosService.put(endpoint, newNote).then((res) => {
         // reset fetch
         onClickRequest();
       });
@@ -43,7 +68,7 @@ const ToggleNote = ({ onClickRequest, notesLen }) => {
   };
 
   return (
-    <form>
+    <li>
       Toggle note importance here: {noteId}
       <button value={"-"} onClick={onClickNoteId}>
         -
@@ -52,41 +77,15 @@ const ToggleNote = ({ onClickRequest, notesLen }) => {
         +
       </button>
       <button onClick={onClickToggle}>Toggle</button>
-    </form>
+    </li>
   );
 };
 
 export default function PartD({ onClickRequest, notesLen }) {
-  const [newNoteContent, setNewNote] = useState("");
-
-  const onChangeNewNote = (e) => {
-    setNewNote(e.target.value);
-  };
-
-  const onClickNewNote = (e) => {
-    e.preventDefault();
-    if (newNoteContent.length == 0) return;
-
-    const newNote = {
-      content: newNoteContent,
-      important: Math.random() < 0.5,
-    };
-    // console.log(newNote);
-
-    axios.post(BASE_URL, newNote).then((res) => {
-      onClickRequest();
-      setNewNote("");
-    });
-  };
-
   return (
     <>
       <h1>D - More than GET</h1>
-      <NewNote
-        onClickNewNote={onClickNewNote}
-        onChangeNewNote={onChangeNewNote}
-        newNoteContent={newNoteContent}
-      />
+      <NewNote onClickRequest={onClickRequest} />
       <ToggleNote onClickRequest={onClickRequest} notesLen={notesLen} />
     </>
   );

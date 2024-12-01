@@ -5,7 +5,6 @@ import viteLogo from '/vite.svg'
 import PartA from './_a - render collections, modules/PartA'
 import PartB from './_b - forms/PartB'
 import PartC from './_c - server/PartC'
-import PartD from './_d - /PartD'
 
 function App() {
   const [count, setCount] = useState(0)

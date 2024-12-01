@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import PartD from "../_d - /PartD";
+import PartD from "./PartD";
+import axiosService from "./axiosService";
 
 const TestAxios = ({ onClickRequest }) => {
   return (
@@ -18,14 +19,14 @@ const FetchStatus = ({ good, bad, notes }) => {
       <h2>Fetch Status</h2>
       <p>Success request: {good}</p>
       {notes.map((note) => (
-        <li key={note.id}>{note.content + ((note.important) ? '❗' : '')}</li>
+        <li key={note.id}>{note.content + (note.important ? "❗" : "")}</li>
       ))}
       <p>Failed request: {bad}</p>
     </>
   );
 };
 
-const UseEffect = ({ onClickRequest}) => {
+const UseEffect = ({ onClickRequest }) => {
   const [input, setInput] = useState("");
 
   const onInputChange = (e) => {
@@ -65,12 +66,12 @@ export default function PartC() {
 
     await new Promise((res, rej) => setTimeout(res, DELAY));
 
-    axios.get(BASE_URL + "notes").then(async (res) => {
+    axiosService.getAll("/notes").then(async (res) => {
       setGood("Ka Ching!");
       setNotes(res.data);
     });
 
-    axios.get(BASE_URL + "foobar").catch(async (err) => {
+    axiosService.getAll("/foobar").catch(async (err) => {
       setBad(err.message);
     });
   };
@@ -80,9 +81,9 @@ export default function PartC() {
       <h1>C - Data Server & Request</h1>
       <TestAxios onClickRequest={onClickRequest} />
       <FetchStatus good={good} bad={bad} notes={notes} />
-      <UseEffect onClickRequest={onClickRequest} notes={notes}/>
-      
-      <PartD onClickRequest={onClickRequest} notesLen={notes.length}/>
+      <UseEffect onClickRequest={onClickRequest} notes={notes} />
+
+      <PartD onClickRequest={onClickRequest} notesLen={notes.length} />
     </>
   );
 }
