@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg'
 import PartA from './_a - render collections, modules/PartA'
 import PartB from './_b - forms/PartB'
 import PartC from './_c - server/PartC'
+import PartE from './_e - styles/PartE'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -36,6 +37,7 @@ function App() {
       <PartB /> */}
       <PartC />
       {/* <PartD /> */}
+      <PartE />
     </>
   )
 }

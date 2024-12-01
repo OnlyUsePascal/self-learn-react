@@ -1,0 +1,19 @@
+h4 {
+  color: blueviolet;
+}
+
+.note {
+  color: blue;
+  /* padding-top: 5px; */
+  font-size: 20px;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
